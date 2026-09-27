@@ -2,7 +2,7 @@
 
 # Get Started
 
-This lab is design to introduce you to: Writing C++ Helper Libraries, Tile Based logic and 2D coordinate code.
+This lab is designed to introduce you to: Writing C++ Helper Libraries, Tile Based logic and 2D coordinate code.
 We will be starting this practical from the usual game loop basis.
 
 **Create a new project, add the main.cpp file, and add the new project to CMake.**
@@ -26,7 +26,7 @@ wwwwwwww
 
 ## Step One - Player Entity
 
-While we won't have any need for complex inheritance or large software patterns, for this practical we are still going to follow the Entity Model. This will be a slight change form Space invaders in that we are not going to inherit from an SFML class.
+While we won't have any need for complex inheritance or large software patterns, for this practical we are still going to follow the Entity Model. This will be a slight change from Space Invaders in that we are not going to inherit from an SFML class.
 
 ### Entity.h and Entity.cpp
 
@@ -159,10 +159,10 @@ Oh, and you can move diagonally... right?
 
 For our next piece of work, we are going to write code that we are going to want to use again in future games. Standard practice would be to use good software engineering to isolate all the logic required for our Level loader code to it's own files and minimize coupling between itself and game code.
 
-One approach is to build a "helper class" which is completely separate form the code of the game, but included in the build as headers and .cpp's. We could then easily move this code to a new project by just brining along the needed files. This is fairly common practice and most game programmers have a collection of small "helper" classes that they copy over from project to project.
+One approach is to build a "helper class" which is completely separate from the code of the game, but included in the build as headers and .cpp's. We could then easily move this code to a new project by just bringing along the needed files. This is fairly common practice and most game programmers have a collection of small "helper" classes that they copy over from project to project.
 
 
-The next step from this approach is to completely separate the code into a library. We are already using several libraries in our project - all the SFML components. Libraries are code that is complied separately to your program and linked in during the link stage. The primary benefit of this is that we don't have to compile libraries again once they are complied (imagine if we had to build SFML every time we needed to build our game code).
+The next step from this approach is to completely separate the code into a library. We are already using several libraries in our project - all the SFML components. Libraries are code that is complied separately to your program and linked in during the link stage. The primary benefit of this is that we don't have to compile libraries again once they are compiled (imagine if we had to build SFML every time we needed to build our game code).
 
 
 In certain situations you can download libraries pre-compiled from the internet. This isn't great for C++ as the compile settings need to be near identical for your application as for the downloaded library. Furthermore - we can't step down into source code when debugging. Providing a library with a well maintained CMakeLists.txt is by far the best way to distribute your code when building libraries for other programmers to use.
@@ -189,7 +189,7 @@ target_link_libraries(lib_tile_level_loader sfml-graphics)
 
 The biggest difference here is the call to "add_library" rather than "add_executable" as we'd do with a main project.
 
-From the CMake we can see that we need to put some code in a "lib_tile_level_loader" folder. Library code is exactly the same as wiring any other C++ file, but we don't need a main() function.
+From the CMake we can see that we need to put some code in a "lib_tile_level_loader" folder. Library code is exactly the same as writing any other C++ file, but we don't need a main() function.
 
 
 ## Level System Code
@@ -354,7 +354,7 @@ void LevelSystem::loadLevelFile(const std::string& path, float tileSize) {
 
 If we had many more tile types we would switch out that switch statement for a loop of some kind, but for the limited tile types we need; it will do.
 
-The file handling code at the top is nothing special, we read the whole file into a string then close the open file. This may be a bad move if the level file was larger, but this where we can get away with saying "C++ is fast, it doesn't matter".
+The file handling code at the top is nothing special, we read the whole file into a string then close the open file. This may be a bad move if the level file was larger, but this is where we can get away with saying "C++ is fast, it doesn't matter".
 
 Once the level string has been parsed into a vector of tile types, an array is created with the final dimensions. Keeping within a vector could be valid, but we don't ever want to change the size of it, so an array seems a better fit.
 
@@ -452,7 +452,7 @@ Remember that Vector2ul type that doesn't exist? Before we can use this, we need
 The vector maths functionality of SFML is quite lacking when compared to larger libraries like GLM.
 We could bring in GLM and write converter functions to allow it to interface with SFML.
 
-This would be a good idea if we needed to advanced thing like quaternions, but we don't.
+This would be a good idea if we needed advanced things like quaternions, but we don't.
 
 Instead we will build a small add-on helper library to add in the functions that SFML misses out.
 
@@ -472,10 +472,10 @@ This is slightly different to the level system library. This time we declare the
 This changes some complex library and linker options that are beyond the scope of explanation here. The simplest explanation is an INTERFACE library target does not directly create build output, though it may have properties set on it and it may be installed, exported and imported. Meaning that in Visual Studio the library will look like it is part of our main lab code (except it isn't. Magic.)
 
 
-There are many different way to create and link libraries, CMake allows us to change these options from a central point and not worry about digging through IDE options.
+There are many different ways to create and link libraries, CMake allows us to change these options from a central point and not worry about digging through IDE options.
 
 
-We need to link the maths library, against the LevelSystem library. edit the level systems cmake code to include lib_maths
+We need to link the maths library, against the LevelSystem library. Edit the level systems cmake code to include lib_maths
 
 
 ```cmake
@@ -484,17 +484,17 @@ target_link_libraries(... lib_tile_level_loader lib_maths sfml-graphics)
 
 As this is a static library - and doesn't produce a compiled output, everything will be in a header.
 
-**Go create the correctly named filed in the correct folder - you should be able to work it out from the CMake code above!**
+**Go create the correctly named file in the correct folder - you should be able to work it out from the CMake code above!**
 
-If you can't see the file after recompiling CMake, you've probably forgotten to add it to your tile map project in the target_link_libraries link correctly. If done correctly the file will appear in the header file folder IN your project, rather than as a separate project - that's because we used INTERFACE this time. Bear in mind, however, that this is the same file across multiple projects, so changing it in one place will change it all in places!
+If you can't see the file after recompiling CMake, you've probably forgotten to add it to your tile map project in the target_link_libraries link correctly. If done correctly the file will appear in the header file folder IN your project, rather than as a separate project - that's because we used INTERFACE this time. Bear in mind, however, that this is the same file across multiple projects, so changing it in one place will change it in all places!
 
 To extend the functionality of sf::vectors we must first be within the same namespace. From here we can define code as if we were inside the SFML library code itself. Things get a little strange if we want to change or override functions that already exist, but we don't here as we are only creating new functionality. As such, don't worry about it for now!
 
 We start by creating a new vector type the 'Vector2ul' which will use size_t (i.e the largest unsigned integer type supported on the system) as the internal components. We will use this for the tile array coordinates.
 
-From this we implement the standard vector maths functions that any self respecting game engine would have. Length, Normalization, and Rotation. I've left these incomplete so you wil have to dredge up your vector maths skills to complete them.
+From this we implement the standard vector maths functions that any self respecting game engine would have. Length, Normalization, and Rotation. I've left these incomplete so you will have to dredge up your vector maths skills to complete them.
 
-Lastly, we override the << stream operator to us do things like "cout << vector". Useful for debugging.
+Lastly, we override the << stream operator to let us do things like "cout << vector". Useful for debugging.
 
 ```cpp
 //maths.h
@@ -610,7 +610,7 @@ bool validmove(Vector2f pos) {
 
 
 - Start the Player from the "Start Tile"
-- End the game When the player hit's the end tile
+- End the game When the player hits the end tile
 - Time how long it takes to complete the maze
 - Show current, previous and best times
 

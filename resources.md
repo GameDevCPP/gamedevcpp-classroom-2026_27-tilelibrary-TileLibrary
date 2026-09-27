@@ -7,14 +7,14 @@ spritesheet.loadFromFile("res/img/invaders_sheet.png")
 It needs to be able to safely and reliably find those files. There are a few ways to go about this, and I'll discuss them here.
 
 # Where should I put my files anyway?
-I believe you should have your runtime assets set up as if the game were installed on a users PC; Inside the game's folder, next to the .exe. 
+I believe you should have your runtime assets set up as if the game were installed on a user's PC; Inside the game's folder, next to the .exe. 
 
 Our .exe lives inside the build folder, which we don't version control or care about. So we need to keep the assets somewhere safe, and either copy them over to the build folder or change the working directory to the source folder (Yuck. This is what VS does by default), or even hardcode the paths (Don't ever do this)
 
 
 ## Differences from running in VS, and running the .exe
 
-When you complile your game, it build a .exe somewhere. 
+When you compile your game, it builds a .exe somewhere. 
 
 We set this in the cmake here `SET(OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/")` .
 
@@ -25,7 +25,7 @@ Release and debug configurations should get their own subfolder.
 ### Running in VS
 
 Pressing *Debug*, or *start without debugging* doesn't just launch the .exe, it wraps some Visual studio magic around it to catch exceptions, debug memory leaks, and inspect performance. It also by default **Changes the working directory**.
-The working directory is the directory the game will look to as it's default path for files.
+The working directory is the directory the game will look to as its default path for files.
 
 ### Running the .exe yourself
 
