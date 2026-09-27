@@ -144,6 +144,8 @@ void Player::Render(sf::RenderWindow &window) const {
 
 Finally, you will need to create a player object, and link it into your Update and Render code from your game loop in order for it to show!
 
+**Tip:** spawn your player at the level's START tile rather than leaving it at the default (0,0) -- in the example maze above, (0,0) is a wall.
+
 **REMEMBER: DO NOT USE New(), you should be using Smart Pointers!** (Hint: you should store the Player instance as a unique pointer, and the code already given you will show you how to store and make these!)
 
 {:class="important"}
@@ -605,6 +607,8 @@ bool validmove(Vector2f pos) {
   return (ls::getTileAt(pos) != ls::WALL);
 }
 ```
+
+**Note:** `getTileAt()`/`getTile()` throw if the position is out of range (e.g. right at the edge of the map) -- wrap calls using `validmove()` in a `try`/`catch`, or your game will crash the first time the player reaches a boundary.
 
 ### Advanced tasks
 
